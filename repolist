@@ -1,0 +1,36 @@
+http://jp.archive.ubuntu.com/ubuntu/ trusty main
+http://jp.archive.ubuntu.com/ubuntu/ trusty restricted
+http://jp.archive.ubuntu.com/ubuntu/ trusty universe
+http://jp.archive.ubuntu.com/ubuntu/ trusty multiverse
+http://jp.archive.ubuntu.com/ubuntu/ trusty-updates main
+http://jp.archive.ubuntu.com/ubuntu/ trusty-updates restricted
+http://jp.archive.ubuntu.com/ubuntu/ trusty-updates universe
+http://jp.archive.ubuntu.com/ubuntu/ trusty-updates multiverse
+http://jp.archive.ubuntu.com/ubuntu/ trusty-backports main
+http://jp.archive.ubuntu.com/ubuntu/ trusty-backports restricted
+http://jp.archive.ubuntu.com/ubuntu/ trusty-backports universe
+http://jp.archive.ubuntu.com/ubuntu/ trusty-backports multiverse
+http://security.ubuntu.com/ubuntu trusty-security main
+http://security.ubuntu.com/ubuntu trusty-security restricted
+http://security.ubuntu.com/ubuntu trusty-security universe
+http://security.ubuntu.com/ubuntu trusty-security multiverse
+http://jp.archive.ubuntu.com/ubuntu/ xenial main
+http://jp.archive.ubuntu.com/ubuntu/ xenial restricted
+http://jp.archive.ubuntu.com/ubuntu/ xenial universe
+http://jp.archive.ubuntu.com/ubuntu/ xenial multiverse
+http://jp.archive.ubuntu.com/ubuntu/ xenial-updates main
+http://jp.archive.ubuntu.com/ubuntu/ xenial-updates restricted
+http://jp.archive.ubuntu.com/ubuntu/ xenial-updates universe
+http://jp.archive.ubuntu.com/ubuntu/ xenial-updates multiverse
+http://security.ubuntu.com/ubuntu xenial-security main
+http://security.ubuntu.com/ubuntu xenial-security restricted
+http://security.ubuntu.com/ubuntu xenial-security universe
+http://security.ubuntu.com/ubuntu xenial-security multiverse
+http://ppa.launchpad.net/maas/stable/ubuntu/ xenial
+http://ppa.launchpad.net/maas/proposed/ubuntu/ xenial
+http://ppa.launchpad.net/juju/stable/ubuntu/ xenial
+http://ppa.launchpad.net/juju/proposed/ubuntu/ xenial
+http://ubuntu-cloud.archive.canonical.com/ubuntu/ xenial-updates/newton main
+http://ubuntu-cloud.archive.canonical.com/ubuntu/ xenial-updates/newton main
+http://ubuntu-cloud.archive.canonical.com/ubuntu/ trusty-updates/mitaka main
+http://ubuntu-cloud.archive.canonical.com/ubuntu/ trusty-proposed/mitaka main
