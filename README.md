@@ -10,15 +10,13 @@ repolistに追加したいmirrorレポジトリの情報を書く
 ./publish_ubuntu_snapshot.sh YYYYMMDD
 ```
 
-## aptly 入門
+# Aptly tips
 
-Aptly tips
-----
-
-* Ubuntu 16.04のデフォルト/etc/apt/sources.list
+## Ubuntu 16.04のデフォルト/etc/apt/sources.list
 
 ```
- cat /etc/apt/sources.list
+# cat /etc/apt/sources.list
+
 # 
 
 # deb cdrom:[Ubuntu-Server 16.04.1 LTS _Xenial Xerus_ - Release amd64 (20160719)]/ xenial main restricted
@@ -76,15 +74,16 @@ deb http://security.ubuntu.com/ubuntu xenial-security multiverse
 # deb-src http://security.ubuntu.com/ubuntu xenial-security multiverse
 ```
 
-* Aptlyのインストール
+## Aptlyのインストール
 
-/etc/apt/sources.listの一番下に下記を追記します。
+### /etc/apt/sources.listの一番下に下記を追記します。
 
 ```
-vim /etc/apt/sources.list
-deb http://repo.aptly.info/ squeeze main
+# vim /etc/apt/sources.list
+# deb http://repo.aptly.info/ squeeze main
 
-sudo apt-get update
+# sudo apt-get update
+
 〜〜〜〜〜
        中略
 〜〜〜〜〜
@@ -94,9 +93,10 @@ N: Data from such a repository can't be authenticated and is therefore potential
 N: See apt-secure(8) manpage for repository creation and user configuration details.
 ```
 
-上記エラーを解決するためにgpg keyを登録します。
+### 上記エラーを解決するためにgpg keyを登録します。
 ```
-sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 9E3E53F19C7DE460
+# sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 9E3E53F19C7DE460
+
 Executing: /tmp/tmp.tSjkVi84mo/gpg.1.sh --keyserver
 keys.gnupg.net
 --recv-keys
@@ -107,9 +107,10 @@ gpg: Total number processed: 1
 gpg:               imported: 1  (RSA: 1)
 ```
 
-もう一度、apt-get updateをしてみましょう。
+### もう一度、apt-get updateをしてみましょう。
 ```
-sudo apt-get update
+# sudo apt-get update
+
 〜〜〜〜〜
        中略
 〜〜〜〜〜
@@ -118,9 +119,10 @@ Fetched 4,887 B in 5s (850 B/s)
 Reading package lists... Done
 ```
 
-aptlyをインストール
+### aptlyをインストール
 ```
-sudo apt-get install aptly
+# sudo apt-get install aptly
+
 Reading package lists... Done
 Building dependency tree
 Reading state information... Done
@@ -139,11 +141,13 @@ Processing triggers for man-db (2.7.5-1) ...
 Setting up aptly (0.9.7) ...
 ```
 
-* aptlyを使う前にgpg keyをセットアップ
+### aptlyを使う前にgpg keyをセットアップ
 
 ```
 コマンドが入っているか確認
-gpg --version
+
+# gpg --version
+
 gpg (GnuPG) 1.4.20
 Copyright (C) 2015 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -159,11 +163,12 @@ Hash: MD5, SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
 Compression: Uncompressed, ZIP, ZLIB, BZIP2
 
 ※入っていなければ下記コマンドでインストール
-sudo apt-get install gnupg
+# sudo apt-get install gnupg
 ```
-keyを生成する
+### keyを生成する
 ```
-gpg --gen-key
+# gpg --gen-key
+
 gpg (GnuPG) 1.4.20; Copyright (C) 2015 Free Software Foundation, Inc.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -237,29 +242,29 @@ uid                  Yuki Yamashita (This is test key.) <kono@kononet.net>
 sub   2048R/DBF07D1C 2017-01-17
 
 もしも、more entropy!!!!と言われて終わらない場合は下記コマンドを別窓で実行
-sudo apt-get install rng-tools
-sudo rngd -r /dev/urandom
+# sudo apt-get install rng-tools
+# sudo rngd -r /dev/urandom
 
 keyが作れたらkill -9 でプロセスを殺しましょう
 ```
 
-gpg keyが作れたらkeyを鍵サーバを登録しましょう
+### gpg keyが作れたらkeyを鍵サーバを登録しましょう
 
 ```
-gpg --list-keys
+# gpg --list-keys
 /home/ubuntu/.gnupg/pubring.gpg
 -------------------------------
 pub   2048R/0BCF2E36 2017-01-17
 uid                  Yuki Yamashita (This is test key.) <kono@kononet.net>
 sub   2048R/DBF07D1C 2017-01-17
 
-gpg --send-keys --keyserver keyserver.ubuntu.com 0BCF2E36
+# gpg --send-keys --keyserver keyserver.ubuntu.com 0BCF2E36
 gpg: sending key 0BCF2E36 to hkp server keyserver.ubuntu.com
 
 これでうまくいかない場合は下記方法を試す
-gpg -a --export kono@kononet.net > pub.asc
+# gpg -a --export kono@kononet.net > pub.asc
 
-cat pub.asc
+# cat pub.asc
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -271,7 +276,7 @@ catした中身をkeyserver.ubuntu.comでペーストしてsubmmit
 
 ```
 
-登録できたか、確認してみましょう
+### 登録できたか、確認してみましょう
 ```
 sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 0BCF2E36
 [sudo] password for ubuntu:
@@ -285,24 +290,25 @@ gpg: Total number processed: 1
 gpg:               imported: 1  (RSA: 1)
 ```
 
-では、aptlyでmirror repositoryを立ててみましょう
+## aptlyでmirror repositoryを立てる
 今回はmaasを立てるので、maasのlocal repositoryを作りましょう
 
-まずはmaasのレポジトリをaptlyサーバに登録します。
+### maasのレポジトリをaptlyサーバに登録
 ```
-sudo add-apt-repository ppa:maas/stable
-sudo apt-get update
+# sudo add-apt-repository ppa:maas/stable
+# sudo apt-get update
 
 レポジトリが登録されていることを確認します。
-cat /etc/apt/sources.list.d/maas-ubuntu-stable-xenial.list
+# cat /etc/apt/sources.list.d/maas-ubuntu-stable-xenial.list
+
 deb http://ppa.launchpad.net/maas/stable/ubuntu xenial main
 # deb-src http://ppa.launchpad.net/maas/stable/ubuntu xenial main
 ```
 
-aptlyでmirror repositoryを作成する
+### aptlyでmirror repositoryを作成する
 
 ```
-aptly mirror create -architectures=amd64 ppa_launchpad_net_maas_xenial_main http://ppa.launchpad.net/maas/stable/ubuntu xenial main
+# aptly mirror create -architectures=amd64 ppa_launchpad_net_maas_xenial_main http://ppa.launchpad.net/maas/stable/ubuntu xenial main
 Config file not found, creating default config at /home/ubuntu/.aptly.conf
 
 
@@ -341,7 +347,7 @@ wget -O - https://some.repo/repository/Release.key | gpg --no-default-keyring --
 
 鍵がないと言われているので、鍵を追加します。
 ```
-gpg --no-default-keyring --keyring trustedkeys.gpg --keyserver keys.gnupg.net --recv-keys 04E7FDC5684D4A1C
+# gpg --no-default-keyring --keyring trustedkeys.gpg --keyserver keys.gnupg.net --recv-keys 04E7FDC5684D4A1C
 gpg: requesting key 684D4A1C from hkp server keys.gnupg.net
 gpg: key 684D4A1C: public key "Launchpad PPA for MAAS" imported
 gpg: Total number processed: 1
@@ -350,7 +356,7 @@ gpg:               imported: 1  (RSA: 1)
 
 もう一度実行します。
 ```
-aptly mirror create -architectures=amd64 ppa_launchpad_net_maas_xenial_main http://ppa.launchpad.net/maas/stable/ubuntu xenial main
+# aptly mirror create -architectures=amd64 ppa_launchpad_net_maas_xenial_main http://ppa.launchpad.net/maas/stable/ubuntu xenial main
 Downloading http://ppa.launchpad.net/maas/stable/ubuntu/dists/xenial/InRelease...
 gpgv: Signature made Wed 23 Nov 2016 10:32:47 PM JST using RSA key ID 684D4A1C
 gpgv: Good signature from "Launchpad PPA for MAAS"
@@ -388,11 +394,16 @@ Suite: xenial
 Version: 16.04
 ```
 
-mirrorが作れました。
-では、mirrorをupdateしましょう
+### 【番外】ローカルリポジトリの作成
+```
+# aptly repo create -architectures=amd64 -distribution="trusty" -component="main" -comment="contrail3.1 repository" contrail-3.1
+# aptly repo add contrail-3.1 /home/ubuntu/contrails/debs/.*
+```
+
+### mirrorをupdateする
 
 ```
-aptly mirror update ppa_launchpad_net_maas_xenial_main
+# aptly mirror update ppa_launchpad_net_maas_xenial_main
 Downloading http://ppa.launchpad.net/maas/stable/ubuntu/dists/xenial/InRelease...
 gpgv: Signature made Wed 23 Nov 2016 10:32:47 PM JST using RSA key ID 684D4A1C
 gpgv: Good signature from "Launchpad PPA for MAAS"
@@ -416,10 +427,10 @@ Downloading http://ppa.launchpad.net/maas/stable/ubuntu/pool/main/m/maas/maas-dn
 Mirror `ppa_launchpad_net_maas_xenial_main` has been successfully updated.
 ```
 
-aptlyではsnapshotを取得することができます。
+### snapshotを取得
 
 ```
-aptly snapshot create ppa_launchpad_net_maas_xenial_main-20170117 from mirror ppa_launchpad_net_maas_xenial_main
+# aptly snapshot create ppa_launchpad_net_maas_xenial_main-20170117 from mirror ppa_launchpad_net_maas_xenial_main
 
 Snapshot ppa_launchpad_net_maas_xenial_main-20170117 successfully created.
 You can run 'aptly publish snapshot ppa_launchpad_net_maas_xenial_main-20170117' to publish snapshot as Debian repository.
@@ -427,7 +438,7 @@ You can run 'aptly publish snapshot ppa_launchpad_net_maas_xenial_main-20170117'
 
 それでは取得したsnapshotを公開してみましょう。
 ```
-aptly publish snapshot -architectures="amd64" -component=main -gpg-key="0BCF2E36" -distribution="xenial" ppa_launchpad_net_maas_xenial_main-20170117 maas/stable/ubuntu
+# aptly publish snapshot -architectures="amd64" -component=main -gpg-key="0BCF2E36" -distribution="xenial" ppa_launchpad_net_maas_xenial_main-20170117 maas/stable/ubuntu
 Loading packages...
 Generating metadata files and linking package files...
 Finalizing metadata files...
@@ -441,11 +452,12 @@ Now you can add following line to apt sources:
 Don't forget to add your GPG key to apt with apt-key.
 ```
 
+## aptly serverの公開
 これで$HOME/.aptly ディレクトリに配置されます。
 webサーバとして公開するためにnginxを使ってもいいですが、まずは確認するためにaptlyの機能だけで確認してみましょう。
 
 ```
-aptly serve
+# aptly serve &
 Serving published repositories, recommended apt sources list:
 
 # maas/stable/ubuntu/xenial [amd64] publishes {main: [ppa_launchpad_net_maas_xenial_main-20170117]: Snapshot from mirror [ppa_launchpad_net_maas_xenial_main]: http://ppa.launchpad.net/maas/stable/ubuntu/ xenial}
@@ -456,12 +468,13 @@ Starting web server at: :8080 (press Ctrl+C to quit)...
 
 これでブラウザから確認できるはずです。
 
-最後にnginxでの設定を行ってみましょう。
+### nginxでの設定
 ```
-sudo apt-get install nginx
+# sudo apt-get install nginx
 
 rootを変更する
-cat /etc/nginx/sites-enabled/default
+# cat /etc/nginx/sites-enabled/default
+
 ##
 # You should look at the following URL's in order to grasp a solid understanding
 # of Nginx configuration files in order to fully unleash the power of Nginx.
@@ -550,16 +563,10 @@ server {
 #	}
 #}
 
-cp -a ~/.aptly/ /var/www/
-rm -rf ~/.aptly
-ln -s /var/www/.aptly .aptly
+# cp -a ~/.aptly/ /var/www/
+# rm -rf ~/.aptly
+# ln -s /var/www/.aptly .aptly
 
-sudo systemctl restart nginx 
-```
-
-* ローカルリポジトリの作成
-```
-aptly repo create -architectures=amd64 -distribution="trusty" -component="main" -comment="contrail3.1 repository" contrail-3.1
-aptly repo add contrail-3.1 /home/ubuntu/contrails/debs/.*
+# sudo systemctl restart nginx 
 ```
 
