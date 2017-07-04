@@ -514,7 +514,7 @@ server {
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
-        autoindex on;
+        autoindex on; #ここを忘れると403が出るので絶対忘れない！！！！
 	server_name _;
         gzip on;
 
