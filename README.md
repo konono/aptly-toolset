@@ -7,7 +7,7 @@ repolistに追加したいmirrorレポジトリの情報を書く
 ./add_mirror.sh
 ./update_all_mirror.sh
 ./snapshot_all_mirror.sh
-./publish_ubuntu_snapshot.sh YYYYMMDD
+./publish_ubuntu_snapshot.sh YYYYMMDD [gpg mail address]
 ```
 
 # Aptly tips
